@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2v</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="jquery-3.2.1.js"></script>
+    <script>
+        function reset() {
+            $("#lorem").css("fontSize","15px");
+        }
+        function big() {
+            $("#lorem").animate({fontSize: "20px"});
+        }
+        function Small() {
+            $("#lorem").animate({fontSize: "10px"});
+        }
+    </script>
+    <style>
+        #font{
+            background-color: aqua;
+            padding-left: 5px;
+            padding-bottom: 10px;
+            width: 290px;
+            border: solid 1px;
+
+        }
+
+    </style>
+</head>
+<body>
+<div id="font">
+    <h2>Големина на фонт:</h2>
+    <button onclick="reset()">Почетна</button>
+    <button onclick="big()">Зголеми</button>
+    <button onclick="Small()">Намали</button>
+</div>
+
+    <h2>Lorem ipsum dolor sit amet</h2>
+
+    <p id="lorem" style="font-size: 15px;width: 650px">consectetur adipiscing elit.
+        Aliquam enim arcu,  placerat eget erat vitae,
+        sollicitudin scelerisque  neque. Donec lorem mi,
+        mattis at efficitur quis,  consequat semper mi.
+        Mauris et convallis tellus, sed facilisis quam.
+        Praesent et laoreet elit. Suspendisse bibendum eu
+        ligula ut ultrices. Vivamus vel dui nibh.</p>
+
+
+</body>
+</html>

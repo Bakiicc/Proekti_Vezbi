@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1b</title>
+</head>
+<body>
+<h1> Форма за пријавување на X-Factor </h1>
+
+<form name="myForm"  onsubmit="return validateForm()" method="post">
+    <table>
+        <tr>
+    <td>Име</td>
+       <td> <input   type="text" name="fname"> </td>
+            <tr>
+            <td> Уметничко име </td>
+            <td> <input type="text" name="fname"></td>
+        </tr>
+        </tr>
+
+        <tr>
+            <tr>
+       <td>Пол</td>
+        <td>
+      <input type="radio" name="fname" id="Male" value="Male" />
+     Машки
+     <input type="radio" name="fname" id="female" value="female" />
+    Женски <br></td>
+        </tr>
+
+        <tr>
+            <td>Жанр</td>
+
+         <td> <select name="red">
+        <option value="-1" selected>[Одбери Жанр]</option>
+        <option value="1">Classical Music</option>
+        <option value="2">Hip Hop / Rap</option>
+        <option value="3">Pop</option>
+        <option value="4">Rock</option>
+        <option value="5">Opera</option>
+        </select>
+         </td>
+        </tr>
+    </table>
+
+    <button type="submit" value="Sumbit">Пријави се</button>
+</form>
+
+<script>
+
+    function validateForm() {
+        var x, text;
+       x = document.forms["myForm"]["fname"].value;
+        if ( x==""){
+            alert("Сите полиња се задолжителни");
+            return false;
+        }
+        if( document.myForm.red.value == "-1" )
+        {
+            alert( "Одберете Жанр" );
+            return false;
+        }
+        else {
+            alert( "Успешно се пријавивте" );
+        }
+        document.getElementById("demo").innerHTML = myForm;
+    }
+
+</script>
+
+
+
+
+</body>
+</html>

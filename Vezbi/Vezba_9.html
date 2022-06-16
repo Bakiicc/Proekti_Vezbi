@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Form</title>
+    <link rel="stylesheet" href="jquery/jquery-ui.css">
+    <link rel="stylesheet" href="jquery/jquery-ui.theme.css">
+    <style>
+        #selectable .ui-selecting {
+            background: #FECA40;
+        }
+        #selectable .ui-selected {
+            background: #F39814;
+            color: white;
+        }
+        #selectable {
+            list-style-type: none;
+            margin: 0; padding: 0;
+            width: 270px;
+        }
+        #selectable li {
+            background: none;
+            margin: 3px;
+            padding: 0.4em;
+            height: 18px;
+        }
+        input{
+            border: solid 1px darkgrey;
+        }
+        .error{
+            color: red;
+            display: none;
+        }
+    </style>
+    <script src = "jquery/jquery.js"></script>
+    <script src = "jquery/jquery-ui.js"></script>
+</head>
+<body>
+    <div id="dialog" title="User Info"></div>
+    <table>
+        <tr>
+            <td><label>Name:</label></td>
+            <td><input placeholder="Name..." id="name"></td>
+            <td id = "nameError" class="error">Insert a name</td>
+        </tr>
+        <tr>
+            <td><label>Surname:</label></td>
+            <td><input placeholder="Surname..." id="surname"></td>
+            <td id = "surnameError" class="error">Insert a surname</td>
+        </tr>
+        <tr>
+            <td><label>Password:</label></td>
+            <td><input type="password" placeholder="Password" id="password"></td>
+            <td id = "passwordError" class="error">Insert a password</td>
+        </tr>
+        <tr>
+            <td><label>DateOfBirth:</label></td>
+            <td><input id="birthday" readonly="readonly" placeholder="Date Of Birth"></td>
+            <td id = "birthdayError" class="error">Select a date</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <label>Select your hobbies:</label>
+    <br>
+    <br>
+    <ul id="selectable">
+        <li class="ui-widget-content">Gaming</li>
+        <li class="ui-widget-content">Sports</li>
+        <li class="ui-widget-content">Watching TV</li>
+        <li class="ui-widget-content">Sleeping</li>
+        <li class="ui-widget-content">Hiking</li>
+        <li class="ui-widget-content">Skiing</li>
+        <li class="ui-widget-content">Dancing</li>
+    </ul>
+    <br>
+    <button id="submit" onclick="submit()">Add my Info</button>
+    <script>
+        $("#birthday").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2012"
+        });
+        $("#selectable").bind("mousedown", function(e) {
+            e.metaKey = true;
+        }).selectable();
+
+        var originalWidth = $("#name").width();
+        var reducedWidth = originalWidth - 2;
+
+        function redBorder(element){
+            $(element).css({"border":"solid 2px red", "margin-bottom":"-1px", "margin-top":"-1px", "width":reducedWidth+"px"});
+        }
+        function normalBorder(element){
+            $(element).css({"border":"solid 1px darkgrey", "margin-bottom":"0", "margin-top":"0", "width":originalWidth+"px"});
+        }
+
+        function check(element){
+            if($(element).val() === ""){
+                $(element+"Error").show();
+                redBorder(element);
+            }
+            else{
+                $(element+"Error").hide();
+                normalBorder(element);
+            }
+        }
+
+        function submit(){
+            //error check:
+            check("#name");
+            check("#surname");
+            check("#password");
+            check("#birthday");
+
+            var name = $("#name").val();
+            var surname = $("#surname").val();
+            var password = $("#password").val();
+            var birthday = $("#birthday").val();
+            var hobbies = "";
+
+            $.each( $("#selectable > li"), function(index, object){
+                if($(object).hasClass("ui-selected")){
+                    if(hobbies != ""){
+                        hobbies += ", ";
+                    }
+                    hobbies += $(object).html();
+                }
+
+                //console.log($(object).val());
+            });
+
+            if(name != "" && surname != "" && password != "" && birthday != ""){
+                $("#dialog").html("Name: " + name + "<br><br>Surname: " + surname + "<br><br>Password: " + password + "<br><br>DateOfBirth: " + birthday + "<br><br>Hobbies: " + hobbies);
+                $("#dialog").dialog({modal: true});
+            }
+
+        }
+    </script>
+</body>
+</html>

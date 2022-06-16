@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Letovi</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src = "jquery/jquery.js"></script>
+        <script src = "jquery/jquery-ui.js"></script>
+        <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+        <style>
+            body{
+                margin: 40px;
+                font-size: 70%;
+            }
+            label{
+                font-weight: bold;
+            }
+            input.text{
+                margin-bottom:12px;
+                width:95%;
+                padding: .4em;
+            }
+            fieldset{
+                padding:0;
+                border:0;
+                margin-top:25px;
+            }
+            h1{
+                font-size: 1.2em;
+                margin: .6em 0;
+            }
+            div#flights-contain {
+                width: 350px;
+                margin: 20px 0;
+            }
+            div#flights-contain table{
+                margin: 1em 0;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            div#flights-contain table td, div#flights-contain table th{
+                border: 1px solid #eee;
+                padding: .6em 10px;
+                text-align: left;
+            }
+            .ui-dialog .ui-state-error{
+                padding: .3em;
+            }
+            .validateTips{
+                border: 1px solid transparent;
+                padding: 0.3em;
+            }
+        </style>
+        <script>
+            $(function() {
+                var dialog, form,
+                        shifra = $("#shifra"),
+                        avioprevoznik = $("#avioprevoznik" ),
+                        doo = $("#do"),
+                        kategorija = $("#kategorija"),
+                        allFields = $([]).add(shifra).add(avioprevoznik).add(doo).add(kategorija),
+                        tips = $(".validateTips");
+
+                function updateTips(t) {
+                    tips.text(t).addClass("ui-state-highlight");
+                    setTimeout(function() {
+                        tips.removeClass( "ui-state-highlight", 1500 );
+                    }, 500);
+                }
+
+                function isNum(o, n){
+                    console.log(n);
+                    if(!$.isNumeric(n)){
+                        o.addClass("ui-state-error");
+                        updateTips("Шифрата мора да биде број!");
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+
+                function checkEmpty() {
+                    var good = true;
+                    if(shifra.val().length == 0){
+                        shifra.addClass("ui-state-error");
+                        good = false;
+                    }
+                    if(avioprevoznik.val().length == 0){
+                        avioprevoznik.addClass("ui-state-error");
+                        good = false;
+                    }
+                    if(doo.val().length == 0){
+                        doo.addClass("ui-state-error");
+                        good = false;
+                    }
+                    if(!good){
+                        updateTips("Сите полиња се задолжителни!");
+                        return false;
+                    }
+                    return true;
+                }
+
+                function addFlight() {
+                    var valid;
+                    allFields.removeClass("ui-state-error");
+                    valid = isNum(shifra, shifra.val());
+                    if(valid){
+                        valid = checkEmpty();
+                    }
+                    if(valid) {
+                        $("#flights tbody").append( "<tr>" +
+                                "<td>" + shifra.val() + "</td>" +
+                                "<td>" + avioprevoznik.val() + "</td>" +
+                                "<td>" + doo.val() + "</td>" +
+                                "<td>" + kategorija.val() + "</td>" +
+                                "</tr>" );
+                        dialog.dialog( "close" );
+                    }
+                    return valid;
+                }
+
+                dialog = $( "#dialog-form" ).dialog({
+                    autoOpen: false,
+                    height: 360,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        "Додади": addFlight,
+                        "Откажи": function() {
+                            dialog.dialog("close");
+                        }
+                    },
+                    close: function() {
+                        form[0].reset();
+                        allFields.removeClass( "ui-state-error" );
+                    }
+                });
+
+                form = dialog.find("form").on( "submit", function(event) {
+                    event.preventDefault();
+                    addFlight();
+                });
+
+                $("#novLet").button().on( "click", function() {
+                    dialog.dialog("open");
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="dialog-form" title="Create new flight">
+            <p class="validateTips">Сите полиња се задолжителни.</p>
+            <form>
+                <fieldset>
+                    <label for="shifra">Шифра</label>
+                    <input type="text" id="shifra"class="text ui-widget-content ui-corner-all">
+                    <label for="avioprevoznik">Авиопревозник</label>
+                    <input type="text" id="avioprevoznik" class="text ui-widget-content ui-corner-all">
+                    <label for="do">До</label>
+                    <input type="text" id="do" class="text ui-widget-content ui-corner-all">
+                    <label for="kategorija">Категорија</label>
+                    <select id = "kategorija">
+                        <option value="Бизнис">Бизнис</option>
+                        <option value="Економска">Економска</option>
+                    </select>
+                </fieldset>
+            </form>
+        </div>
+
+        <div id="flights-contain" class="ui-widget">
+            <h1>Летови:</h1>
+            <table id="flights" class="ui-widget ui-widget-content">
+                <thead>
+                <tr class="ui-widget-header ">
+                    <th>Шифра</th>
+                    <th>Авиопревозник</th>
+                    <th>До</th>
+                    <th>Класа</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>12331</td>
+                    <td>Wizz Air</td>
+                    <td>London</td>
+                    <td>Бизнис</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button id="novLet">Додади нова ставка</button>
+
+    </body>
+</html>
